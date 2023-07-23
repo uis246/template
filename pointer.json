@@ -5,6 +5,7 @@
 	"mask": [
 		"https://raw.githubusercontent.com/uis246/template/master/mask.png"
 	],
+	"name": "mlp",
 	"offX": 500,
 	"offY": 0,
 	"mux": false
