@@ -1,0 +1,11 @@
+{
+	"bot": [
+		"https://raw.githubusercontent.com/uis246/template/master/autopick.png"
+	],
+	"mask": [
+		"https://raw.githubusercontent.com/uis246/template/master/mask.png"
+	],
+	"offX": 500,
+	"offY": 0,
+	"mux": false
+}
