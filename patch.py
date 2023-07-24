@@ -2,9 +2,6 @@ import requests
 import io
 from PIL import Image
 
-#Update overrides
-return -1
-
 def download_image(url):
     r = requests.get(url)
     if r.status_code != requests.codes.ok:
