@@ -12,8 +12,8 @@ def download_image(url):
 autopick = download_image("https://ponyplace.z19.web.core.windows.net/mlp/autopick.png").copy()
 mask = download_image("https://ponyplace.z19.web.core.windows.net/mlp/mask.png").copy()
 
-mask_override = Image.open("./mask_override_ponk.png")
-autopick_override = Image.open("./pixel_override_ponk.png")
+mask_override = Image.open("./mask_override.png")
+autopick_override = Image.open("./pixel_override.png")
 
 autopick_white = Image.new("RGBA", (autopick.size[0], autopick.size[1]), "white")
 mask.paste(autopick_white, (0, 0), autopick_override)
