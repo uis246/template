@@ -9,4 +9,4 @@ Modifying is not enought. Change are only applied after running patch.py, then p
 # Regular update
 (template for fish shell)
 
-``while true; git stash --all; and git pull; and echo "patching"; and  python3 patch.py; and git add autopick.png mask.png; and echo "commiting"; and git commit -m "update"; echo "pushing"; and  git push; echo "waiting..."; sleep 60; end``
+``while true; git stash --all; and git pull; and echo "patching"; and  python3 patch.py; and git add autopick.png mask.png; and echo "commiting"; and git commit -m "update"; echo "pushing"; and  git push; echo "waiting..."; sleep 300; end``
