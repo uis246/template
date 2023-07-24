@@ -1,0 +1,13 @@
+{
+	"bot": [
+		"https://raw.githubusercontent.com/uis246/template/master/pixel_override_ponk.png"
+	],
+	"mask": [
+		"https://raw.githubusercontent.com/uis246/template/master/mask_srpb.png"
+	],
+	"name": "mlp",
+	"offX": 0,
+	"offY": 0,
+	"etag": 7,
+	"mux": false
+}
