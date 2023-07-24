@@ -8,5 +8,6 @@
 	"name": "mlp",
 	"offX": 500,
 	"offY": 0,
+	"etag": 1,
 	"mux": false
 }
