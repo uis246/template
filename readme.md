@@ -15,6 +15,7 @@ Modifying is not enought. Change are only applied after running patch.py, then p
 ### Why preferred
 1. Blends mask correctly
 2. Report conflicts in templates
+3. Upstream mask multiplier
 
 (template for fish shell)
 ``while true; git stash --all; and git pull; and echo "patching"; and make sync; echo "waiting..."; sleep 300; end``

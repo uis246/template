@@ -126,7 +126,9 @@ static void unmapwrite(struct mappedpng png) {
 		fclose(png.f);
 }
 
-void blendRGBArow(png_bytep out, png_bytep up, png_bytep ovr, png_uint_32 x, png_uint_32 row, bool mask) {
+void blendRGBArow(png_bytep out, png_bytep up, png_bytep ovr, png_uint_32 x, png_uint_32 row, bool mask, float premult) {
+	if(!mask)
+		premult = 1.f;
 	for(png_uint_32 i = 0; i < x; i++) {
 		png_byte a = ovr[i * 4 + 3];
 		if(a != 0) {
@@ -138,12 +140,25 @@ void blendRGBArow(png_bytep out, png_bytep up, png_bytep ovr, png_uint_32 x, png
 				else
 					printf("Info: override redefines same value at %"PRIu32" %"PRIu32"\n", i, row);
 			((uint32_t*)out)[i] = ((uint32_t*)ovr)[i];
-		} else
-			((uint32_t*)out)[i] = ((uint32_t*)up)[i];
+		} else {
+			if(premult != 1.f) {
+				png_byte r = up[i * 4 + 0],
+					g = up[i * 4 + 1],
+					b = up[i * 4 + 2];
+					r = ((float)r) * premult;
+					g = ((float)g) * premult;
+					b = ((float)b) * premult;
+					out[i * 4 + 0] = r;
+					out[i * 4 + 1] = g;
+					out[i * 4 + 2] = b;
+					out[i * 4 + 3] = 255;
+			} else
+				((uint32_t*)out)[i] = ((uint32_t*)up)[i];
+		}
 	}
 }
 
-void overlay(struct mappedpng up, struct mappedpng ovr, const char *outpath, bool mask) {
+void overlay(struct mappedpng up, struct mappedpng ovr, const char *outpath, bool mask, float factor) {
 	void *buf;
 	if(ovr.x != up.x || ovr.y != up.y) {
 		fprintf(stderr, "autopick resolution mismatch, copying override\n");
@@ -182,7 +197,7 @@ void overlay(struct mappedpng up, struct mappedpng ovr, const char *outpath, boo
 		for(png_uint_32 i = 0; i < up.y; i++) {
 			png_read_row(up.ptr, upP, NULL);
 			png_read_row(ovr.ptr, ovrP, NULL);
-			blendRGBArow(outP, upP, ovrP, up.x, i, mask);
+			blendRGBArow(outP, upP, ovrP, up.x, i, mask, factor);
 			png_write_row(out.ptr, outP);
 		}
 		unmapwrite(out);
@@ -191,21 +206,29 @@ void overlay(struct mappedpng up, struct mappedpng ovr, const char *outpath, boo
 }
 
 int main(int argc, char **argv) {
-	if(argc != 3) {
-		printf("Usage: %s pixel_override mask_override\n", argv[0]);
+	float factor = 1.f;
+	if(argc < 3 || argc > 4) {
+		printf("Usage: %s pixel_override mask_override [mask factor]\n", argv[0]);
 		return 0;
+	}
+	if(argc == 4)
+		factor = (float)atof(argv[3]);
+	if(factor > 1.f || factor < 0.f) {
+		fprintf(stderr, "Error: factor %f is not valid and should be in range [0, 1]. Setting factor to 1\n", factor);
+		factor = 1;
 	}
 	//up - upstream
 	//ovr - override
 	struct mappedpng ovr = map(argv[1]),
 		up = map("upstream.png");
-	overlay(up, ovr, "autopick.png", false);
+	overlay(up, ovr, "autopick.png", false, factor);
 	unmap(up);
 	unmap(ovr);
 
 	ovr = map(argv[2]);
 	up = map("upstream_mask.png");
-	overlay(up, ovr, "mask.png", true);
+	printf("Info: factor = %f\n", factor);
+	overlay(up, ovr, "mask.png", true, factor);
 	unmap(up);
 	unmap(ovr);
 }
