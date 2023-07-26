@@ -1,5 +1,12 @@
+# SRPB template for r/place 2023
+
+Special thank you to the Main Hero - https://github.com/PoneyClairDeLune - for bot.
+Thank you to Marius for template and tools contribution.
+Thank you to bot runners and other participants.
+This was fun Sweetiebotting.
+
 ## How to modify
-Use gimp or another image editor with layer. Edit the mask_override.png and pixel_override.png. Those images will be then pasted over the template of the main server.
+Use gimp or another image editor with layer. Edit the mask\_override.png and pixel\_override.png. Those images will be then pasted over the template of the main server.
 
 To disable a placement for the bot, just make a black mask on the selected pixels.
 
